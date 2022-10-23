@@ -1,10 +1,11 @@
-#+TITLE: chez-xml
+#+TITLE: Chez-XML λ-0.1
 
 #+AUTHOR: Yunoinsky Chen
 
-
 ** Introduction
 
+   [[[https://github.com/Yunoinsky/chez-xml/blob/main/README.zh.org][中文版本]]]
+   
    A lite non-standard xml parser in Chez Scheme.
 
    - Parse XML into scheme tree structure

@@ -2,9 +2,10 @@
 
 #+AUTHOR: Yunoinsky Chen
 
-
 ** 简介
 
+   [[[https://github.com/Yunoinsky/chez-xml/blob/main/README.org][English Version]]]
+   
    一个 Chez Scheme 实现的轻量级非标准 XML 解析器
    （青春版 XML 解析器）
 
