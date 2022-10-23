@@ -1,57 +1,55 @@
-#+TITLE: chez-xml
+#+TITLE: Chez-XML λ-0.1
 
 #+AUTHOR: Yunoinsky Chen
 
 
-** Introduction
+** 简介
 
-   A lite non-standard xml parser in Chez Scheme.
+   一个 Chez Scheme 实现的轻量级非标准 XML 解析器
+   （青春版 XML 解析器）
 
-   - Parse XML into scheme tree structure
-   - Element will be convert into ~((name . attr-alist) . child-list)~
-   - Toggle between space-preserving and space-ignoring modes.
-   - Can only ignore the delaration and xml head for now.
-   - DTD are currently not supported.
-   - Comment inside label cannot be parse correctly
+   - 将 XML 解析为 Scheme 树状结构
+   - XML 元素将被转换为
+     ~((name . attr-alist) . child-list)~ 的形式
+   - 可以在保留空白与忽略空白二者之间切换
+   - 目前只能忽略掉 XML 声明头（毕竟是青春版）
+   - 目前还不支持 DTD
+   - 标签中的注释目前还不能被正确解析
 
-** Installation
+** 安装
 
-   ([[https://github.com/cisco/ChezScheme][Chez Scheme (v9.5.8)]] is required)
+   （注：需要预先安装 [[https://github.com/cisco/ChezScheme][Chez Scheme (v9.5.8)]]。）
 
-   xml-toml is a single-file library,
-   ~./src/xml.sls~ is the source code,
-   ~./src/xml.so~ is its compiled file.
-   Each of them is enough to use chez-xml.
+   chez-xml 是一个单文件库，
+   ~./src/xml.sls~ 为源代码文件，
+   ~./src/xml.so~ 为其编译后文件，
+   只要二者之一在路径中，即可使用 chez-xml 库。
 
-*** Basic steps
+*** 基础步骤
 
-    By following steps,
-    you can easily run the test case.
+    可以简单快捷地运行测例：
 
     #+begin_src shell
       
-      git clone https://github.com/Yunoinsky/xml-toml # clone this repository
+      git clone https://github.com/Yunoinsky/xml-toml # 克隆仓库
       cd chez-xml
       scheme --script ./test/test.ss
 
     #+end_src   
 
-*** Global installation
-    By copying ~xml.sls~ or ~xml.so~
-    to the corresponding project, we can
-    use chez-xml in other projects.
-    You can also choose to install it globally.
-    Here is one way to do this.
+*** 全局安装
 
-    1. Create lib directory: ~~/Library/chezscheme/~.
-    2. Copy ~xml.so~ or ~xml.sls~ to this directory.
-    3. append ~~/Library/chezscheme/~ to the environment variable ~CHEZSCHEMELIBDIRS~.
-    4. Then, we can use ~(import (xml))~ to import this library directly.
+    为了在其他项目中使用 chez-xml，
+    我们可以将 ~xml.sls~ 或 ~xml.so~ 拷贝到对应项目中，
+    也可以选择全局安装。下面提供一种全局安装的方式
+
+    1. 创建 ~~/Library/chezscheme/~ 目录
+    2. 将 ~xml.so~ 拷贝到该目录
+    3. 将 ~~/Library/chezscheme/~ 添加到环境变量 ~CHEZSCHEMELIBDIRS~ 中
     
-** Basic Usage
+** 基本用法
 
-   Take an excerpt from the API of Raysan's
-   outstanding project - [[https://github.com/raysan5/raylib][raylib]] as an example.
+   我们节选了 Raysan 的杰出项目 [[https://github.com/raysan5/raylib][raylib]] API 中的一小段作为样例
    
    #+begin_src xml
      <?xml version="1.0" encoding="Windows-1252" ?>
@@ -101,20 +99,19 @@
      </raylibAPI>  
    #+end_src
 
-*** Load and import library
+*** 加载库
 
     #+begin_src scheme
-      (load "./src/xml.so") ;; this line can be commented
-                            ;; out if installed globally
+      (load "./src/xml.so") ;; 如果已全局安装，可省略加载
       (import (xml))
     #+end_src
 
-*** Lite XML Reader
+*** 轻量级 TOML 读取器
     - (xml-load text-port preserve-blank) ::
-      Load xml-data from a text-port, return a scheme tree.
-      If preserve-blank is ~#t~, all of the blank chars will
-      be preserved and parsed as strings, or they will be
-      ignored.
+      从文本流加载 XML 数据，得到一个 scheme 。
+      如果参数 preserve-blank 为 ~#t~ ，
+      则所有空白字符都会被保留；
+      否则，则会被忽略。
 
     #+begin_src scheme
       (define fp (open-input-file "./test/test_raylibapi.xml"))
@@ -122,23 +119,23 @@
       (pretty-print data)
     #+end_src
       
-*** Basic data structure
+*** 基本数据结构
 
     - (xml-get-name node) ::
-      Get the name of xml node.
+      获取 XML 节点的名称
     - (xml-get-attrs node) ::
-      Get the attrs alist of xml node.
+      获取 XML 节点的属性，以关联列表的形式
     - (xml-get-children node) ::
-      Get the children's list of xml node.
+      获取 XML 节点的所有子项，以列表的形式
     
     #+begin_src scheme
-      (define funcs-data (caddr (xml-get-children data)))
+      (define funcs-data (caddr (xml-get-eles data)))
 
       (pretty-print (xml-get-name funcs-data))
       (pretty-print (xml-get-attrs funcs-data))
 
-      (define func1-data (car (xml-get-children funcs-data)))
+      (define func1-data (car (xml-get-eles funcs-data)))
       (pretty-print (xml-get-name func1-data))
       (pretty-print (xml-get-attrs func1-data))
-      (pretty-print (xml-get-children func1-data))
+      (pretty-print (xml-get-eles func1-data))
     #+end_src
