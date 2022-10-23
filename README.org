@@ -1,2 +1,102 @@
-# chez-xml
-A lite xml parser in Chez Scheme
+#+TITLE: chez-xml
+
+#+AUTHOR: Yunoinsky Chen
+
+
+** Introduction
+
+   A lite non-standard xml parser in Chez Scheme.
+
+   - Parse XML into scheme tree structure
+   - Element will be convert into ~((name . attr-alist) . child-list)~
+   - Toggle between space-preserving and space-ignoring modes.
+   - Can only ignore the delaration and xml head for now.
+   - DTD are currently not supported.
+   - Comment inside label cannot be parse correctly
+
+** Installation
+
+   ([[https://github.com/cisco/ChezScheme][Chez Scheme (v9.5.8)]] is required)
+
+   xml-toml is a single-file library,
+   ~./src/xml.sls~ is the source code,
+   ~./src/xml.so~ is its compiled file.
+   Each of them is enough to use chez-xml.
+
+*** Basic steps
+
+    By following steps,
+    you can easily run the test case.
+
+    #+begin_src shell
+      
+      git clone https://github.com/Yunoinsky/xml-toml # clone this repository
+      cd chez-xml
+      scheme --script ./test/test.ss
+
+    #+end_src   
+
+*** Global installation
+    By copying ~xml.sls~ or ~xml.so~
+    to the corresponding project, we can
+    use chez-xml in other projects.
+    You can also choose to install it globally.
+    Here is one way to do this.
+
+    1. Create lib directory: ~~/Library/chezscheme/~.
+    2. Copy ~xml.so~ or ~xml.sls~ to this directory.
+    3. append ~~/Library/chezscheme/~ to the environment variable ~CHEZSCHEMELIBDIRS~.
+    4. Then, we can use ~(import (xml))~ to import this library directly.
+    
+** Basic Usage
+
+   Take an excerpt from the API of Raysan's
+   outstanding project - [[https://github.com/raysan5/raylib][raylib]] as an example.
+
+   <details>
+   #+begin_src xml
+     <?xml version="1.0" encoding="Windows-1252" ?>
+     <raylibAPI>
+       <Defines count="4">
+         <Define name="PI" type="FLOAT" value="3.14159265358979323846" desc="" />
+         <Define name="DEG2RAD" type="FLOAT_MATH" value="(PI/180.0f)" desc="" />
+         <Define name="RED" type="COLOR" value="CLITERAL(Color){ 200, 200, 200, 255 }" desc="Light Gray" />
+         <Define name="BLUE" type="COLOR" value="CLITERAL(Color){ 0, 121, 241, 255 }" desc="Blue" />
+       </Defines>
+       <Structs count="4">
+         <Struct name="Vector2" fieldCount="2" desc="Vector2, 2 components">
+           <Field type="float" name="x" desc="Vector x component" />
+           <Field type="float" name="y" desc="Vector y component" />
+         </Struct>
+         <Struct name="Vector3" fieldCount="3" desc="Vector3, 3 components">
+           <Field type="float" name="x" desc="Vector x component" />
+           <Field type="float" name="y" desc="Vector y component" />
+           <Field type="float" name="z" desc="Vector z component" />
+         </Struct>
+         <Struct name="Color" fieldCount="4" desc="Color, 4 components, R8G8B8A8 (32bit)">
+           <Field type="unsigned char" name="r" desc="Color red value" />
+           <Field type="unsigned char" name="g" desc="Color green value" />
+           <Field type="unsigned char" name="b" desc="Color blue value" />
+           <Field type="unsigned char" name="a" desc="Color alpha value" />
+         </Struct>
+         <Struct name="Rectangle" fieldCount="4" desc="Rectangle, 4 components">
+           <Field type="float" name="x" desc="Rectangle top-left corner position x" />
+           <Field type="float" name="y" desc="Rectangle top-left corner position y" />
+           <Field type="float" name="width" desc="Rectangle width" />
+           <Field type="float" name="height" desc="Rectangle height" />
+         </Struct>
+       </Structs>
+       <Functions count="3">
+         <Function name="InitWindow" retType="void" paramCount="3" desc="Initialize window and OpenGL context">
+           <Param type="int" name="width" desc="" />
+           <Param type="int" name="height" desc="" />
+           <Param type="const char *" name="title" desc="" />
+         </Function>
+         <Function name="CloseWindow" retType="void" paramCount="0" desc="Close window and unload OpenGL context">
+         </Function>
+         <Function name="IsWindowReady" retType="bool" paramCount="0" desc="Check if window has been initialized successfully">
+         </Function>
+       </Functions>
+     </raylibAPI>  
+   #+end_src
+   </details>
