@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="Windows-1252" ?>
+
+<!-- test_raylibapi.xml -->
+<!-- https://raw.githubusercontent.com/raysan5/raylib/master/parser/output/raylib_api.xml -->
+
+<raylibAPI>
+  <Defines count="4">
+    <Define name="PI" type="FLOAT" value="3.14159265358979323846" desc="" />
+    <Define name="DEG2RAD" type="FLOAT_MATH" value="(PI/180.0f)" desc="" />
+    <Define name="RED" type="COLOR" value="CLITERAL(Color){ 200, 200, 200, 255 }" desc="Light Gray" />
+    <Define name="BLUE" type="COLOR" value="CLITERAL(Color){ 0, 121, 241, 255 }" desc="Blue" />
+  </Defines>
+  <Structs count="4">
+    <Struct name="Vector2" fieldCount="2" desc="Vector2, 2 components">
+      <Field type="float" name="x" desc="Vector x component" />
+      <Field type="float" name="y" desc="Vector y component" />
+    </Struct>
+    <Struct name="Vector3" fieldCount="3" desc="Vector3, 3 components">
+      <Field type="float" name="x" desc="Vector x component" />
+      <Field type="float" name="y" desc="Vector y component" />
+      <Field type="float" name="z" desc="Vector z component" />
+    </Struct>
+    <Struct name="Color" fieldCount="4" desc="Color, 4 components, R8G8B8A8 (32bit)">
+      <Field type="unsigned char" name="r" desc="Color red value" />
+      <Field type="unsigned char" name="g" desc="Color green value" />
+      <Field type="unsigned char" name="b" desc="Color blue value" />
+      <Field type="unsigned char" name="a" desc="Color alpha value" />
+    </Struct>
+    <Struct name="Rectangle" fieldCount="4" desc="Rectangle, 4 components">
+      <Field type="float" name="x" desc="Rectangle top-left corner position x" />
+      <Field type="float" name="y" desc="Rectangle top-left corner position y" />
+      <Field type="float" name="width" desc="Rectangle width" />
+      <Field type="float" name="height" desc="Rectangle height" />
+    </Struct>
+  </Structs>
+  <Functions count="2">
+    <Function name="InitWindow" retType="void" paramCount="3" desc="Initialize window and OpenGL context">
+      <Param type="int" name="width" desc="" />
+      <Param type="int" name="height" desc="" />
+      <Param type="const char *" name="title" desc="" />
+    </Function>
+    <Function name="IsWindowReady" retType="bool" paramCount="0" desc="Check if window has been initialized successfully">
+    </Function>
+  </Functions>
+</raylibAPI>  
