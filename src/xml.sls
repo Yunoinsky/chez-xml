@@ -1,6 +1,6 @@
 (library (xml (0 1))
   (export xml-load
-          xml-get-name xml-get-attrs xml-get-eles)
+          xml-get-name xml-get-attrs xml-get-children)
   (import (chezscheme))
 
   (define-syntax push!
@@ -36,10 +36,10 @@
   (define (xml-get-attrs node)
     (cdar node))
 
-  (define (xml-get-eles node)
-    (cddr node))
+  (define (xml-get-children node)
+    (cdr node))
 
-  (define (xml-load fp reserve-space)
+  (define (xml-load fp preserve-blank)
     (let ([ch-buffer '()])
       (define (next)
         (if (null? ch-buffer)
@@ -82,7 +82,7 @@
             (case new-ch
               [#\<
                (push! ch-buffer #\<)
-               (if (or reserve-space
+               (if (or preserve-blank
                        (not (blank-ch-list? ch-rl)))
                    (rlist->string ch-rl)
                    'comment)]
@@ -98,7 +98,7 @@
                     [else (loop (cons new-ch ch-rl))])
                    (cond
                     [(eof-object? new-ch)
-                     (if (or reserve-space
+                     (if (or preserve-blank
                              (not (blank-ch-list? ch-rl)))
                          (rlist->string ch-rl)
                          'comment)]
