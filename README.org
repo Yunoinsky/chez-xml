@@ -57,7 +57,7 @@
      <?xml version="1.0" encoding="Windows-1252" ?>
      
      <!-- ./test/test_raylibapi.xml -->
-     <!-- https://raw.githubusercontent.com/raysan5/raylib/master/parser/output/raylib_api.xml -->
+     <!-- https://raw.githubusercontent.com/raysan5/raylib/refs/heads/master/tools/rlparser/output/raylib_api.xml -->
 
      <raylibAPI>
        <Defines count="4">
