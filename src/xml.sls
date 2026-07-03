@@ -36,6 +36,16 @@
         (if (null? ch-buffer)
             (get-char fp)
             (pop! ch-buffer)))
+      (define (get-keyword ch-rl)
+        (if (>= (length ch-rl) 7)
+            (rlist->string ch-rl)
+            (let ([ch (next)])
+              (if (or (eof-object? ch)
+                      (not (char-alphabetic? ch)))
+                  (begin
+                    (push! ch-buffer ch)
+                    (rlist->string ch-rl))
+                  (get-keyword (cons ch ch-rl))))))
       (define (parse-content class)
         (let ([ch (next)])
           (if (eof-object? ch)
@@ -102,9 +112,14 @@
             [#\! (let ([ch (next)])
                    (if (char=? ch #\-)
                        (parse-comment)
-                       (begin
-                         (push! ch-buffer ch)
-                         (parse-decl))))]
+                       (let ([keyword (get-keyword (list ch))])
+                         (if (string-ci=? keyword "DOCTYPE")
+                             (parse-dtd)
+                             (begin
+                               (for-each (lambda (c)
+                                           (push! ch-buffer c))
+                                         (string->list keyword))
+                               (parse-decl))))))]
             [#\> (error ch
                         "Parser Error: empty label")]
             [#\/ (parse-end-label class)]
@@ -175,6 +190,20 @@
             (if (char=? ch #\>)
                 'decl
                 (loop)))))
+      (define (parse-dtd)
+        (let loop ([depth 0])
+          (let ([ch (next)])
+            (when (eof-object? ch)
+              (error #f
+                     "Parser Error: DTD not terminated"))
+            (case ch
+              [#\[ (loop (+ depth 1))]
+              [#\] (loop (- depth 1))]
+              [#\> (if (zero? depth)
+                       'dtd
+                       (loop depth))]
+              [else (loop depth)]))))
+
       (define (end-single-element el-name attrs)
         (if (and (char=? (next) #\>)
                  (not (string=? el-name "")))
