@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE root [
+  <!ENTITY nbsp "&#xA0;">
+]>
+<!-- a comment at top level -->
+<root>
+  <?processing-instruction data?>
+  <element <!-- comment inside tag --> attr="value" />
+  <!NOTATION gif SYSTEM "gif-viewer">
+  <child>text &amp; more</child>
+</root>
