@@ -18,7 +18,7 @@
 
    ([[https://github.com/cisco/ChezScheme][Chez Scheme (v9.5.8)]] is required)
 
-   xml-toml is a single-file library,
+   chez-xml is a single-file library,
    ~./src/xml.sls~ is the source code,
    ~./src/xml.so~ is its compiled file.
    Each of them is enough to use chez-xml.
@@ -30,7 +30,7 @@
 
     #+begin_src shell
       
-      git clone https://github.com/Yunoinsky/xml-toml # clone this repository
+      git clone https://github.com/Yunoinsky/chez-xml # clone this repository
       cd chez-xml
       scheme --script ./test/test.ss
 

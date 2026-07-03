@@ -1,4 +1,4 @@
-#+TITLE: Chez-XML λ-0.1
+#+TITLE: Chez-XML λ-0.2
 
 #+AUTHOR: Yunoinsky Chen
 
@@ -13,9 +13,8 @@
    - XML 元素将被转换为
      ~((name . attr-alist) . child-list)~ 的形式
    - 可以在保留空白与忽略空白二者之间切换
-   - 目前只能忽略掉 XML 声明头（毕竟是青春版）
-   - 目前还不支持 DTD
-   - 标签中的注释目前还不能被正确解析
+   - 能够静默跳过任意位置的 XML 声明头、DTD 声明与处理指令
+   - 支持标签内的 XML 注释
 
 ** 安装
 
@@ -32,7 +31,7 @@
 
     #+begin_src shell
       
-      git clone https://github.com/Yunoinsky/xml-toml # 克隆仓库
+      git clone https://github.com/Yunoinsky/chez-xml # 克隆仓库
       cd chez-xml
       scheme --script ./test/test.ss
 
@@ -107,7 +106,7 @@
       (import (xml))
     #+end_src
 
-*** 轻量级 TOML 读取器
+*** 轻量级 XML 读取器
     - (xml-load text-port preserve-blank) ::
       从文本流加载 XML 数据，得到一个 scheme 。
       如果参数 preserve-blank 为 ~#t~ ，
@@ -130,13 +129,13 @@
       获取 XML 节点的所有子项，以列表的形式
     
     #+begin_src scheme
-      (define funcs-data (caddr (xml-get-eles data)))
+      (define funcs-data (caddr (xml-get-children data)))
 
       (pretty-print (xml-get-name funcs-data))
       (pretty-print (xml-get-attrs funcs-data))
 
-      (define func1-data (car (xml-get-eles funcs-data)))
+      (define func1-data (car (xml-get-children funcs-data)))
       (pretty-print (xml-get-name func1-data))
       (pretty-print (xml-get-attrs func1-data))
-      (pretty-print (xml-get-eles func1-data))
+      (pretty-print (xml-get-children func1-data))
     #+end_src
