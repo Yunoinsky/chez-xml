@@ -233,13 +233,8 @@
                          (if (string=? element-name "")
                              (label-loop '() 0)
                              (attrs-loop element-name '()))))
-                     (begin
-                       (push! ch-buffer c3)
-                       (push! ch-buffer c2)
-                       (push! ch-buffer c1)
-                       (push! ch-buffer #\<)
-                       (let ([element-name (rlist->string ch-rl)])
-                         (attrs-loop element-name '())))))]
+                     (error #f
+                            "Parser Error: invalid char in label")))]
               [(#\newline #\tab #\space #\return #\> #\/)
                (let ([element-name (rlist->string ch-rl)])
                  (case ch
