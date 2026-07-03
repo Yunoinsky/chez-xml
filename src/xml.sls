@@ -228,10 +228,7 @@
                      (begin
                        (push! ch-buffer c3)
                        (parse-comment)
-                       (let ([element-name (rlist->string ch-rl)])
-                         (if (string=? element-name "")
-                             (label-loop '() 0)
-                             (attrs-loop element-name '()))))
+                       (attrs-loop (rlist->string ch-rl) '()))
                      (error #f
                             "Parser Error: invalid char in label")))]
               [(#\newline #\tab #\space #\return #\> #\/)
