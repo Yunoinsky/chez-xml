@@ -1,4 +1,4 @@
-#+TITLE: Chez-XML λ-0.1
+#+TITLE: Chez-XML λ-0.2
 
 #+AUTHOR: Yunoinsky Chen
 
@@ -11,9 +11,8 @@
    - Parse XML into scheme tree structure
    - Element will be convert into ~((name . attr-alist) . child-list)~
    - Toggle between space-preserving and space-ignoring modes.
-   - Can only ignore the delaration and xml head for now.
-   - DTD are currently not supported.
-   - Comment inside label cannot be parse correctly
+   - Declaration, xml head, and DOCTYPE declarations are silently skipped at any position.
+   - Supports XML comments inside open-tag bodies.
 
 ** Installation
 
