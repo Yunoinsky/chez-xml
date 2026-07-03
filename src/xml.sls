@@ -221,6 +221,25 @@
               (error (rlist->string ch-rl)
                      "Parser Error: label not terminated"))
             (case ch
+              [#\<
+               (let* ([c1 (next)] [c2 (next)] [c3 (next)])
+                 (if (and (char=? c1 #\!)
+                          (char=? c2 #\-)
+                          (char=? c3 #\-))
+                     (begin
+                       (push! ch-buffer c3)
+                       (parse-comment)
+                       (let ([element-name (rlist->string ch-rl)])
+                         (if (string=? element-name "")
+                             (label-loop '() 0)
+                             (attrs-loop element-name '()))))
+                     (begin
+                       (push! ch-buffer c3)
+                       (push! ch-buffer c2)
+                       (push! ch-buffer c1)
+                       (push! ch-buffer #\<)
+                       (let ([element-name (rlist->string ch-rl)])
+                         (attrs-loop element-name '())))))]
               [(#\newline #\tab #\space #\return #\> #\/)
                (let ([element-name (rlist->string ch-rl)])
                  (case ch
@@ -241,6 +260,17 @@
               [#\/ (end-single-element element-name attrs)]
               [(#\newline #\tab #\space #\return)
                (attrs-loop element-name attrs)]
+              [#\<
+               (let* ([c1 (next)] [c2 (next)] [c3 (next)])
+                 (if (and (char=? c1 #\!)
+                          (char=? c2 #\-)
+                          (char=? c3 #\-))
+                     (begin
+                       (push! ch-buffer c3)
+                       (parse-comment)
+                       (attrs-loop element-name attrs))
+                     (error #f
+                            "Parser Error: invalid attr name")))]
               [#\> (cons (cons element-name attrs)
                          (contents-loop element-name))]
               [else
@@ -292,7 +322,7 @@
           (let ([new-content (parse-content element-name)])
             (cond
              [(null? new-content) '()]
-             [(eq? new-content 'comment)
+             [(symbol? new-content)
               (contents-loop element-name)]
              [else
               (cons new-content
