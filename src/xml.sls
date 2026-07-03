@@ -138,7 +138,7 @@
                     [#\> '()]
                     [else
                      (error
-                      ch
+                      #f
                       "Invalid end label")])))
               (let ([ch (next)])
                 (if (char=? ch (car res-ch))
@@ -172,11 +172,11 @@
                (if (char=? (next) #\>)
                    'xml-decl
                    (error
-                    ch
+                    #f
                     "Parser Error: xml decl need ?> to end"))]
               [#\>
                (error
-                ch
+                #f
                 "Parser Error: xml decl need ?> to end")]
               [else (loop)]))))
       (define (parse-decl)
