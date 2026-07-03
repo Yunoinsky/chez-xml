@@ -98,21 +98,13 @@
       (define (parse-struct class)
         (let ([ch (next)])
           (case ch
-            [#\? (if (eq? class 'head)
-                     (parse-xml-decl)
-                     (error
-                      '()
-                      "Parser Error: xml decl not ahead"))]
+            [#\? (parse-xml-decl)]
             [#\! (let ([ch (next)])
                    (if (char=? ch #\-)
                        (parse-comment)
-                       (if (eq? class 'head)
-                           (begin
-                             (push! ch-buffer ch)
-                             (parse-decl))
-                           (error
-                            #f
-                            "Parser Error: decl not ahead"))))]
+                       (begin
+                         (push! ch-buffer ch)
+                         (parse-decl))))]
             [#\> (error ch
                         "Parser Error: empty label")]
             [#\/ (parse-end-label class)]
