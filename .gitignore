@@ -1,3 +1,6 @@
+.DS_Store
+.superpowers/
+
 *.ss~
 *.ss#*
 .#*.ss
