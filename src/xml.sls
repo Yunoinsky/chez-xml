@@ -7,20 +7,11 @@
     (syntax-rules ()
       [(_ rl item) (set! rl (cons item rl))]))
 
-  (define-syntax push-cdr!
-    (syntax-rules ()
-      [(_ pair item) (set-cdr! pair (cons item (cdr pair)))]))
-
   (define-syntax pop!
     (syntax-rules ()
       [(_ rl) (let ([a (car rl)])
                 (set! rl (cdr rl))
                 a)]))
-
-  (define-syntax inc!
-    (syntax-rules ()
-      [(_ x) (set! x (+ x 1))]
-      [(_ x a) (set! x (+ x a))]))
 
   (define (blank-ch-list? ch-list)
     (andmap (lambda (c)
@@ -150,7 +141,7 @@
                            "Not match label"))))))
       (define (parse-comment)
         (unless (char=? (next) #\-)
-          ("Parser Error: invalid comment"))
+          (error #f "Parser Error: invalid comment"))
         (let loop ([hyphen-num 0])
           (let ([ch (next)])
             (when (eof-object? ch)
