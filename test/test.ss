@@ -1,4 +1,4 @@
-(load "./src/xml.so")
+(load "./src/xml.sls")
 (import (xml))
 (import (chezscheme))
 

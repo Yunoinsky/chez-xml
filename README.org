@@ -19,34 +19,35 @@
    ([[https://github.com/cisco/ChezScheme][Chez Scheme (v9.5.8)]] is required)
 
    chez-xml is a single-file library,
-   ~./src/xml.sls~ is the source code,
-   ~./src/xml.so~ is its compiled file.
-   Each of them is enough to use chez-xml.
+   ~./src/xml.sls~ is the source code.
+   Load it directly or compile to ~xml.so~ for faster loading.
 
 *** Basic steps
 
     By following steps,
-    you can easily run the test case.
+    you can easily compile and run the test case.
 
     #+begin_src shell
       
       git clone https://github.com/Yunoinsky/chez-xml # clone this repository
       cd chez-xml
+      echo '(compile-file "src/xml.sls")' | scheme -q  # optional: pre-compile
       scheme --script ./test/test.ss
 
     #+end_src   
 
 *** Global installation
-    By copying ~xml.sls~ or ~xml.so~
-    to the corresponding project, we can
-    use chez-xml in other projects.
-    You can also choose to install it globally.
+    By copying ~xml.sls~ to the target project,
+    we can use chez-xml in other projects.
+    You can also choose to install it globally
+    as a pre-compiled library.
     Here is one way to do this.
 
-    1. Create lib directory: ~~/Library/chezscheme/~.
-    2. Copy ~xml.so~ or ~xml.sls~ to this directory.
-    3. append ~~/Library/chezscheme/~ to the environment variable ~CHEZSCHEMELIBDIRS~.
-    4. Then, we can use ~(import (xml))~ to import this library directly.
+    1. Compile: ~echo '(compile-file "src/xml.sls")' | scheme -q~
+    2. Create lib directory: ~~/Library/chezscheme/~.
+    3. Copy ~xml.so~ to this directory.
+    4. Append ~~/Library/chezscheme/~ to ~CHEZSCHEMELIBDIRS~.
+    5. Then, ~(import (xml))~ works in any project.
     
 ** Basic Usage
 
@@ -104,7 +105,7 @@
 *** Load and import library
 
     #+begin_src scheme
-      (load "./src/xml.so") ;; this line can be commented
+      (load "./src/xml.sls") ;; this line can be commented
                             ;; out if installed globally
       (import (xml))
     #+end_src
