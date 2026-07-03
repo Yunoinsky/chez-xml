@@ -16,7 +16,7 @@
 
 ** Installation
 
-   ([[https://github.com/cisco/ChezScheme][Chez Scheme (v9.5.8)]] is required)
+   ([[https://github.com/cisco/ChezScheme][Chez Scheme (v10.4.1)]] is required)
 
    chez-xml is a single-file library,
    ~./src/xml.sls~ is the source code.
@@ -44,9 +44,9 @@
     Here is one way to do this.
 
     1. Compile: ~echo '(compile-file "src/xml.sls")' | scheme -q~
-    2. Create lib directory: ~~/Library/chezscheme/~.
+    2. Create lib directory: ~/Library/chezscheme/.
     3. Copy ~xml.so~ to this directory.
-    4. Append ~~/Library/chezscheme/~ to ~CHEZSCHEMELIBDIRS~.
+    4. Append ~/Library/chezscheme/ to ~CHEZSCHEMELIBDIRS~.
     5. Then, ~(import (xml))~ works in any project.
     
 ** Basic Usage

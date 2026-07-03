@@ -18,7 +18,7 @@
 
 ** 安装
 
-   （注：需要预先安装 [[https://github.com/cisco/ChezScheme][Chez Scheme (v9.5.8)]]。）
+   （注：需要预先安装 [[https://github.com/cisco/ChezScheme][Chez Scheme (v10.4.1)]]。）
 
    chez-xml 是一个单文件库，
    ~./src/xml.sls~ 为源代码文件，
@@ -44,9 +44,9 @@
     也可以选择编译后全局安装。下面提供一种全局安装的方式
 
     1. 编译：~echo '(compile-file "src/xml.sls")' | scheme -q~
-    2. 创建 ~~/Library/chezscheme/~ 目录
+    2. 创建 ~/Library/chezscheme/ 目录
     3. 将 ~xml.so~ 拷贝到该目录
-    4. 将 ~~/Library/chezscheme/~ 添加到环境变量 ~CHEZSCHEMELIBDIRS~ 中
+    4. 将 ~/Library/chezscheme/ 添加到环境变量 ~CHEZSCHEMELIBDIRS~ 中
     5. 此后 ~(import (xml))~ 可在任意项目中使用
     
 ** 基本用法
