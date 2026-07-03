@@ -238,6 +238,91 @@
   '(("a" . "\n"))
   (xml-get-attrs xml-nl))
 
+;; ====================
+;; Error handling
+;; ====================
+
+(define (string-contains? s sub)
+  (let ([n (string-length sub)])
+    (let loop ([i 0])
+      (cond
+       [(> (+ i n) (string-length s)) #f]
+       [(string=? (substring s i (+ i n)) sub) #t]
+       [else (loop (+ i 1))]))))
+
+(define (assert-error name input expected-msg)
+  (guard (c [else
+             (let ([msg (condition-message c)])
+               (if (string-contains? msg expected-msg)
+                   (begin
+                     (display "[OK] ")
+                     (display name)
+                     (newline))
+                   (begin
+                     (display "[FAIL] ")
+                     (display name)
+                     (newline)
+                     (display "  expected: ") (display expected-msg) (newline)
+                     (display "  got:      ") (display msg) (newline))))])
+    (xml-load (open-input-string input) #f)
+    (begin
+      (display "[FAIL] ")
+      (display name)
+      (display " (no error thrown)")
+      (newline))))
+
+(assert-error "unclosed comment"
+  "<!-- no end"
+  "comment not terminated")
+
+(assert-error "unclosed xml decl"
+  "<?xml oops"
+  "xml decl not terminated")
+
+(assert-error "unclosed DTD"
+  "<!DOCTYPE root ["
+  "DTD not terminated")
+
+(assert-error "unclosed element"
+  "<root><child></root>"
+  "Not match label")
+
+(assert-error "mismatched close tag"
+  "<root></wrong>"
+  "Not match label")
+
+(assert-error "empty label"
+  "<>"
+  "empty label")
+
+(assert-error "invalid element name"
+  "<123>"
+  "invalid element name")
+
+(assert-error "struct after root"
+  "<a/><b/>"
+  "struct after root")
+
+(assert-error "entity without end"
+  "<x>&amp</x>"
+  "entity ref without end")
+
+(assert-error "unknown entity"
+  "<x>&bad;</x>"
+  "entity ref not defined")
+
+(assert-error "unclosed string"
+  "<e a=\"no-end>"
+  "not close ending")
+
+(assert-error "invalid attr name"
+  "<e 123=value/>"
+  "invalid attr name")
+
+(assert-error "xml name starts with xml"
+  "<xmlns/>"
+  "name start with xml")
+
 (newline)
 (display "All tests complete.")
 (newline)
