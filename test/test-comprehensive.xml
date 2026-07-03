@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE catalog [
+  <!ENTITY nbsp "&#xA0;">
+]>
+<!-- top-level comment -->
+<catalog>
+  <?sort-by name?>
+  <!-- comment between siblings -->
+  <!ATTLIST ignored-decl>
+  <book id="bk101" <!-- comment inside tag --> available="yes">
+    <author gender="male" married>Jim &lt;The Rock&gt; Smith</author>
+    <title>XML Developer&apos;s Guide</title>
+    <price unit="USD">44.95</price>
+    <empty />
+    <nested>
+      <deep>
+        <value>&quot;hello &amp; world&quot;</value>
+      </deep>
+    </nested>
+    <mixed>text <inline>inner</inline> more text</mixed>
+  </book>
+  <!-- comment before close -->
+</catalog>

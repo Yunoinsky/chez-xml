@@ -52,6 +52,7 @@
               #f
               (case ch
                 [#\< (parse-struct class)]
+                [#\& (begin (push! ch-buffer #\&) (parse-string '() #f))]
                 [else (parse-string (list ch) #f)]))))
 
       (define (parse-entity)
@@ -120,13 +121,11 @@
                                            (push! ch-buffer c))
                                          (string->list keyword))
                                (parse-decl))))))]
-            [#\> (error ch
-                        "Parser Error: empty label")]
+            [#\> (error #f "Parser Error: empty label")]
             [#\/ (parse-end-label class)]
             [else
              (unless (char-alphabetic? ch)
-               (error ch
-                      "Parser Error: invalid element name"))
+               (error #f "Parser Error: invalid element name"))
              (push! ch-buffer ch)
              (parse-element)])))
       (define (parse-end-label name)
@@ -249,8 +248,7 @@
         (define (attrs-loop element-name attrs)
           (let ([ch (next)])
             (when (eof-object? ch)
-              (error ch
-                     "Parser Error: attrs not terminated"))
+              (error #f "Parser Error: attrs not terminated"))
             (case ch
               [#\/ (end-single-element element-name attrs)]
               [(#\newline #\tab #\space #\return)
@@ -270,7 +268,7 @@
                          (contents-loop element-name))]
               [else
                (unless (char-alphabetic? ch)
-                 (error ch "Parser Error: invalid attr name"))
+                 (error #f "Parser Error: invalid attr name"))
                (push! ch-buffer ch)
                (attrs-loop element-name
                            (cons (get-attr-pair) attrs))])))
@@ -293,12 +291,11 @@
                    (cons key '())])))))
         (define (get-attr-key ch-rl)
           (let ([ch (next)])
-            (when (or (eof-object? ch)
-                      (eq? ch #\<))
+            (when (eof-object? ch)
               (error (rlist->string ch-rl)
                      "Parser Error: attr key not terminated"))
             (case ch
-              [(#\= #\/ #\space #\newline #\tab)
+              [(#\= #\/ #\space #\newline #\tab #\>)
                (push! ch-buffer ch)
                (rlist->string ch-rl)]
               [else (get-attr-key (cons ch ch-rl))])))
